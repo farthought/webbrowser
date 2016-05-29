@@ -1,0 +1,32 @@
+Format: 1.8
+Date: Mon, 19 Dec 2011 00:26:46 +0100
+Source: midori
+Binary: midori midori-dbg
+Architecture: source i386
+Version: 0.4.3+dfsg-0.2
+Distribution: unstable
+Urgency: low
+Maintainer: Ryan Niebur <ryan@debian.org>
+Changed-By: Yves-Alexis Perez <corsac@debian.org>
+Description: 
+ midori     - fast, lightweight graphical web browser
+ midori-dbg - fast, lightweight graphical web browser (debug symbols)
+Changes: 
+ midori (0.4.3+dfsg-0.2) unstable; urgency=low
+ .
+   * New upstream release.
+Checksums-Sha1: 
+ 4cf37d232cd46dda76d3baa34bdb6badcaf97cdc 1502 midori_0.4.3+dfsg-0.2.dsc
+ 8178bb612207343e50103ec27e5aa439eff89642 413263 midori_0.4.3+dfsg-0.2.debian.tar.gz
+ ab210f6223f378ce77e86220d77862794d5d5713 1161652 midori_0.4.3+dfsg-0.2_i386.deb
+ e0855869757d94f9b1684f1ca270c2ca3bd85f2c 1244534 midori-dbg_0.4.3+dfsg-0.2_i386.deb
+Checksums-Sha256: 
+ 4d1b6cfd74f8e218e41dfe57dc26acdc1d43eee4f1db52df520566e5cd785126 1502 midori_0.4.3+dfsg-0.2.dsc
+ f9819bf68e6c191be3313856025507758eebbc776c93f2226378f2a1a1d07a0b 413263 midori_0.4.3+dfsg-0.2.debian.tar.gz
+ cdfd4608c29dd52756d346347147de89441a5c38f385c954f3d2a43755416c08 1161652 midori_0.4.3+dfsg-0.2_i386.deb
+ 0be56ebde804bc294caba977029abf8127b8b572818bd1d916127e622811c25c 1244534 midori-dbg_0.4.3+dfsg-0.2_i386.deb
+Files: 
+ ed7df94cabb368d32ae1fdb9e06637ee 1502 web optional midori_0.4.3+dfsg-0.2.dsc
+ dd6426173a3cb9cf961350459469f665 413263 web optional midori_0.4.3+dfsg-0.2.debian.tar.gz
+ 8649c061bd804e83a2bb7d2f80e44a28 1161652 web optional midori_0.4.3+dfsg-0.2_i386.deb
+ f74f6b9632b948300a787ed5dc3c82af 1244534 debug extra midori-dbg_0.4.3+dfsg-0.2_i386.deb

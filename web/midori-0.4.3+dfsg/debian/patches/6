@@ -1,0 +1,93 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ midori (0.4.3+dfsg-0.2) unstable; urgency=low
+ .
+   * New upstream release.
+Author: Yves-Alexis Perez <corsac@debian.org>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- midori-0.4.3+dfsg.orig/po/zh_CN.po
++++ midori-0.4.3+dfsg/po/zh_CN.po
+@@ -30,21 +30,25 @@ msgstr "轻量级网络浏览器"
+ #: ../data/midori.desktop.in.h:3 ../midori/main.c:2009 ../midori/main.c:2029
+ #: ../midori/main.c:2045 ../midori/midori-websettings.c:303
+ msgid "Midori"
+-msgstr "Midori 浏览器"
++msgstr "普华浏览器"
+ 
+ #: ../data/midori.desktop.in.h:4
+ msgid "Web Browser"
+ msgstr "网络浏览器"
+ 
+ #: ../data/midori-private.desktop.in.h:1
+-msgid "Midori Private Browsing"
+-msgstr "Midori 浏览器隐私浏览方式"
++msgid "iSoft Explore Private Browsing"
++msgstr "普华Explore 隐私浏览方式"
+ 
+ #: ../data/midori-private.desktop.in.h:2
+ msgid "Open a new private browsing window"
+ msgstr "打开新的隐私浏览窗口"
+ 
+ #: ../data/midori-private.desktop.in.h:3
++msgid "iSoft Explore"
++msgstr "普华浏览器"
++
++#: ../data/midori-private.desktop.in.h:3
+ msgid "Private Browsing"
+ msgstr "隐私浏览方式"
+ 
+--- midori-0.4.3+dfsg.orig/data/midori.desktop.in
++++ midori-0.4.3+dfsg/data/midori.desktop.in
+@@ -1,7 +1,7 @@
+ [Desktop Entry]
+ Version=1.0
+ Type=Application
+-_Name=Midori
++_Name=iSoft Explore
+ _GenericName=Web Browser
+ _Comment=Lightweight web browser
+ _X-GNOME-Keywords=Internet;WWW;Explorer
+@@ -9,7 +9,7 @@ _X-AppInstall-Keywords=Internet;WWW;Expl
+ Categories=GTK;Network;WebBrowser;
+ MimeType=text/html;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/geo;image/svg+xml;
+ Exec=midori %U
+-Icon=midori
++Icon=/usr/share/pixmaps/isoft-logo.png
+ Terminal=false
+ StartupNotify=true
+ X-Osso-Type=application/x-executable
+--- midori-0.4.3+dfsg.orig/data/midori-private.desktop.in
++++ midori-0.4.3+dfsg/data/midori-private.desktop.in
+@@ -1,12 +1,12 @@
+ [Desktop Entry]
+ Version=1.0
+ Type=Application
+-_Name=Midori Private Browsing
++_Name=iSoft Explore Private Browsing
+ _GenericName=Private Browsing
+ _Comment=Open a new private browsing window
+ Categories=GTK;Network;WebBrowser;
+ Exec=midori --private %U
+-Icon=midori
++Icon=/usr/share/pixmaps/isoft-logo.png
+ Terminal=false
+ StartupNotify=true
+ X-Osso-Type=application/x-executable

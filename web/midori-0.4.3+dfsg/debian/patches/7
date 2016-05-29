@@ -1,0 +1,39 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ midori (0.4.3+dfsg-0.2) unstable; urgency=low
+ .
+   * New upstream release.
+Author: Yves-Alexis Perez <corsac@debian.org>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- midori-0.4.3+dfsg.orig/midori/midori-browser.c
++++ midori-0.4.3+dfsg/midori/midori-browser.c
+@@ -5267,9 +5267,9 @@ static const GtkActionEntry entries[] =
+     { "CaretBrowsing", NULL,
+         N_("Ca_ret Browsing"), "F7",
+         NULL, G_CALLBACK (_action_caret_browsing_activate) },
+-    { "Fullscreen", GTK_STOCK_FULLSCREEN,
++/*    { "Fullscreen", GTK_STOCK_FULLSCREEN,
+         NULL, "F11",
+-        N_("Toggle fullscreen view"), G_CALLBACK (_action_fullscreen_activate) },
++        N_("Toggle fullscreen view"), G_CALLBACK (_action_fullscreen_activate) },*/
+     { "ScrollLeft", NULL,
+         N_("Scroll _Left"), "h",
+         NULL, G_CALLBACK (_action_scroll_somewhere_activate) },

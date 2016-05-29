@@ -1,0 +1,138 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ midori (0.4.3+dfsg-0.2) unstable; urgency=low
+ .
+   * New upstream release.
+Author: Yves-Alexis Perez <corsac@debian.org>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- midori-0.4.3+dfsg.orig/midori/midori-browser.c
++++ midori-0.4.3+dfsg/midori/midori-browser.c
+@@ -5176,13 +5176,13 @@ static const GtkActionEntry entries[] =
+     { "AddSpeedDial", NULL,
+         N_("Add to Speed _dial"), "<Ctrl>h",
+         NULL, G_CALLBACK (_action_add_speed_dial_activate) },
+-   /* { "AddDesktopShortcut", NULL,
++    { "AddDesktopShortcut", NULL,
+     #if HAVE_HILDON
+         N_("Add Shortcut to the _desktop"), "<Ctrl>j",
+     #else
+         N_("Create _Launcher"), "<Ctrl>j",
+     #endif
+-        NULL, G_CALLBACK (_action_add_desktop_shortcut_activate) },*/
++        NULL, G_CALLBACK (_action_add_desktop_shortcut_activate) },
+     { "AddNewsFeed", NULL,
+         N_("Subscribe to News _feed"), NULL,
+         NULL, G_CALLBACK (_action_add_news_feed_activate) },
+@@ -5267,9 +5267,9 @@ static const GtkActionEntry entries[] =
+     { "CaretBrowsing", NULL,
+         N_("Ca_ret Browsing"), "F7",
+         NULL, G_CALLBACK (_action_caret_browsing_activate) },
+-/*    { "Fullscreen", GTK_STOCK_FULLSCREEN,
++    { "Fullscreen", GTK_STOCK_FULLSCREEN,
+         NULL, "F11",
+-        N_("Toggle fullscreen view"), G_CALLBACK (_action_fullscreen_activate) },*/
++        N_("Toggle fullscreen view"), G_CALLBACK (_action_fullscreen_activate) },
+     { "ScrollLeft", NULL,
+         N_("Scroll _Left"), "h",
+         NULL, G_CALLBACK (_action_scroll_somewhere_activate) },
+@@ -5360,12 +5360,12 @@ static const GtkActionEntry entries[] =
+         NULL, NULL },
+ 
+     { "Help", NULL, N_("_Help") },
+-  /*  { "HelpFAQ", GTK_STOCK_HELP,
++    { "HelpFAQ", GTK_STOCK_HELP,
+         N_("_Frequent Questions"), "F1",
+-        NULL, G_CALLBACK (_action_help_link_activate) },*/
+-   /* { "HelpBugs", NULL,
++        NULL, G_CALLBACK (_action_help_link_activate) },
++    { "HelpBugs", NULL,
+         N_("_Report a Problem..."), NULL,
+-        NULL, G_CALLBACK (_action_help_link_activate) },*/
++        NULL, G_CALLBACK (_action_help_link_activate) },
+     { "About", GTK_STOCK_ABOUT,
+         NULL, "",
+         NULL, G_CALLBACK (_action_about_activate) },
+@@ -5383,10 +5383,10 @@ static const GtkToggleActionEntry toggle
+         N_("_Navigationbar"), "",
+         NULL, G_CALLBACK (_action_navigationbar_activate),
+         FALSE },
+-   /* { "Panel", GTK_STOCK_INDENT,
++    { "Panel", GTK_STOCK_INDENT,
+         N_("Side_panel"), "F9",
+         N_("Sidepanel"), G_CALLBACK (_action_panel_activate),
+-        FALSE },*/
++        FALSE },
+     { "Bookmarkbar", NULL,
+         N_("_Bookmarkbar"), "",
+         NULL, G_CALLBACK (_action_bookmarkbar_activate),
+@@ -5986,8 +5986,8 @@ midori_browser_init (MidoriBrowser* brow
+                       "signal::notify::default-item",
+                       _action_search_notify_default_item, browser,
+                       NULL);
+-    gtk_action_group_add_action_with_accel (browser->action_group,
+-        action, "<Ctrl>K");
++//    gtk_action_group_add_action_with_accel (browser->action_group,
++//        action, "<Ctrl>K");
+     g_object_unref (action);
+ 
+     action = g_object_new (MIDORI_TYPE_PANED_ACTION,
+@@ -6007,7 +6007,7 @@ midori_browser_init (MidoriBrowser* brow
+                       "signal::activate-item-alt",
+                       _action_trash_activate_item_alt, browser,
+                       NULL);
+-    gtk_action_group_add_action_with_accel (browser->action_group, action, "");
++//    gtk_action_group_add_action_with_accel (browser->action_group, action, "");
+     g_object_unref (action);
+ 
+     action = g_object_new (KATZE_TYPE_ARRAY_ACTION,
+@@ -6088,8 +6088,8 @@ midori_browser_init (MidoriBrowser* brow
+     hildon_program_add_window (hildon_program_get_instance (),
+                                HILDON_WINDOW (browser));
+     #else
+-    g_signal_connect (browser->menubar, "button-press-event",
+-        G_CALLBACK (midori_browser_menu_button_press_event_cb), browser);
++  //  g_signal_connect (browser->menubar, "button-press-event",
++  //      G_CALLBACK (midori_browser_menu_button_press_event_cb), browser);
+ 
+     menuitem = gtk_menu_item_new ();
+     gtk_widget_show (menuitem);
+@@ -6160,8 +6160,8 @@ midori_browser_init (MidoriBrowser* brow
+     gtk_toolbar_set_show_arrow (GTK_TOOLBAR (browser->navigationbar), TRUE);
+     g_object_set (_action_by_name (browser, "Back"), "is-important", TRUE, NULL);
+     gtk_widget_hide (browser->navigationbar);
+-    g_signal_connect (browser->navigationbar, "popup-context-menu",
+-        G_CALLBACK (midori_browser_toolbar_popup_context_menu_cb), browser);
++    //g_signal_connect (browser->navigationbar, "popup-context-menu",
++        //G_CALLBACK (midori_browser_toolbar_popup_context_menu_cb), browser);
+     #if HAVE_HILDON
+     hildon_window_add_toolbar (HILDON_WINDOW (browser),
+                                GTK_TOOLBAR (browser->navigationbar));
+@@ -6198,8 +6198,8 @@ midori_browser_init (MidoriBrowser* brow
+     #else
+     gtk_box_pack_start (GTK_BOX (vbox), browser->bookmarkbar, FALSE, FALSE, 0);
+     #endif
+-    g_signal_connect (browser->bookmarkbar, "popup-context-menu",
+-        G_CALLBACK (midori_browser_toolbar_popup_context_menu_cb), browser);
++    //g_signal_connect (browser->bookmarkbar, "popup-context-menu",
++        //G_CALLBACK (midori_browser_toolbar_popup_context_menu_cb), browser);
+ 
+     /* Create the panel */
+     hpaned = gtk_hpaned_new ();

@@ -1,0 +1,12 @@
+1.去除右键点击menubar或者toolbar时弹出多选按钮框，在midinor-browser.c的6091,6092,6163,6164,6201,6202
+ g_signal_connect (browser->menubar, "button-press-event",      
+         G_CALLBACK (midori_browser_menu_button_press_event_cb), browser);
+ g_signal_connect(browser->navigationbar, "popup-context-menu",
+        G_CALLBACK (midori_browser_toolbar_popup_context_menu_cb), browser);
+ g_signal_connect (browser->bookmarkbar, "popup-context-menu",
+        G_CALLBACK (midori_browser_toolbar_popup_context_menu_cb),browser);  
+ 注释掉。
+2.去掉工具栏按钮右键点击弹出多选框，在midinor-browser.c的6409,6417调用midori_browser_toolbar_popup_context_menu_cb
+  的地方注释掉。
+
+

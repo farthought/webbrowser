@@ -1,0 +1,4 @@
+debian/tmp/*
+debian/presubj /usr/share/bug/midori/
+debian/isoft-logo.png /usr/share/pixmaps/
+debian/midori.conf /etc/

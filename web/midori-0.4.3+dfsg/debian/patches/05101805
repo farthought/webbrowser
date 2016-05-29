@@ -1,0 +1,107 @@
+Description: <short summary of the patch>
+ TODO: Put a short summary on the line above and replace this paragraph
+ with a longer explanation of this change. Complete the meta-information
+ with other relevant fields (see below for details). To make it easier, the
+ information below has been extracted from the changelog. Adjust it or drop
+ it.
+ .
+ midori (0.4.3+dfsg-0.2) unstable; urgency=low
+ .
+   * New upstream release.
+Author: Yves-Alexis Perez <corsac@debian.org>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- /dev/null
++++ midori-0.4.3+dfsg/Makefile
+@@ -0,0 +1,43 @@
++#!/usr/bin/make -f
++# Waf Makefile wrapper
++WAF_HOME=/home/sg-os/webbrowser/exit/midori-0.4.3+dfsg
++
++all:
++	@/usr/bin/python2 /home/sg-os/webbrowser/exit/midori-0.4.3+dfsg/waf build
++
++all-debug:
++	@/usr/bin/python2 /home/sg-os/webbrowser/exit/midori-0.4.3+dfsg/waf -v build
++
++all-progress:
++	@/usr/bin/python2 /home/sg-os/webbrowser/exit/midori-0.4.3+dfsg/waf -p build
++
++install:
++	@if test -n "$(DESTDIR)"; then \
++	    /usr/bin/python2 /home/sg-os/webbrowser/exit/midori-0.4.3+dfsg/waf install --destdir="$(DESTDIR)"; \
++	else \
++	    /usr/bin/python2 /home/sg-os/webbrowser/exit/midori-0.4.3+dfsg/waf install; \
++	fi;
++
++.PHONY: install
++
++uninstall:
++	@if test -n "$(DESTDIR)"; then \
++	    /usr/bin/python2 /home/sg-os/webbrowser/exit/midori-0.4.3+dfsg/waf uninstall --destdir="$(DESTDIR)"; \
++	else \
++	    /usr/bin/python2 /home/sg-os/webbrowser/exit/midori-0.4.3+dfsg/waf uninstall; \
++	fi;
++
++clean:
++	@/usr/bin/python2 /home/sg-os/webbrowser/exit/midori-0.4.3+dfsg/waf clean
++
++distclean:
++	@/usr/bin/python2 /home/sg-os/webbrowser/exit/midori-0.4.3+dfsg/waf distclean
++	@-rm -rf _build_
++	@-rm -f Makefile
++
++check:
++	@/usr/bin/python2 /home/sg-os/webbrowser/exit/midori-0.4.3+dfsg/waf check
++
++dist:
++	@/usr/bin/python2 /home/sg-os/webbrowser/exit/midori-0.4.3+dfsg/waf dist
++
+--- midori-0.4.3+dfsg.orig/midori/midori-browser.c
++++ midori-0.4.3+dfsg/midori/midori-browser.c
+@@ -3625,8 +3625,8 @@ _action_navigation_activate (GtkAction*
+     }
+     else if (g_str_equal (name, "Homepage"))
+     {
++        g_object_set (browser->settings, "homepage", "http://www.baidu.com", NULL);
+         g_object_get (browser->settings, "homepage", &uri, NULL);
+-
+         if (middle_click)
+         {
+           gint n;
+@@ -4155,10 +4155,12 @@ static void
+ _action_bookmark_add_activate (GtkAction*     action,
+                                MidoriBrowser* browser)
+ {
+-    if (g_str_equal (gtk_action_get_name (action), "BookmarkFolderAdd"))
++/*    if (g_str_equal (gtk_action_get_name (action), "BookmarkFolderAdd"))
+         midori_browser_edit_bookmark_dialog_new (browser, NULL, TRUE, TRUE);
+     else
+-        midori_browser_edit_bookmark_dialog_new (browser, NULL, TRUE, FALSE);
++        midori_browser_edit_bookmark_dialog_new (browser, NULL, TRUE, FALSE);*/
++    GtkAction* actionnew = _action_by_name (browser, "Homepage");
++    _action_navigation_activate(actionnew, browser);
+ }
+ 
+ static void
+@@ -5312,7 +5314,7 @@ static const GtkActionEntry entries[] =
+         N_("Add a new bookmark"), G_CALLBACK (_action_bookmark_add_activate) },*/    
+     { "BookmarkAdd", STOCK_HOMEPAGE,
+         NULL, "<Alt>Home",
+-        N_("Go to your homepage"), G_CALLBACK (_action_navigation_activate) },
++        N_("Go to your homepage"), G_CALLBACK (_action_bookmark_add_activate) },
+     { "BookmarkFolderAdd", NULL,
+         N_("Add a new _folder"), "",
+         NULL, G_CALLBACK (_action_bookmark_add_activate) },
