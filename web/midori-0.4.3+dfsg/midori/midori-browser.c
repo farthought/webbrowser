@@ -56,128 +56,9 @@
 
 #include <errno.h>
 #include <assert.h>
-#define KEYVALLEN 100
-#define BUFSIZE 128
-typedef struct urllist
-{
-    struct urllist *urlnext;
-    struct urllist *urlpre;
-    gchar urldata[BUFSIZE];
-}urllistFilter;
-static urllistFilter *creatUrllist(void);
-static urllistFilter *insertUrllist(urllistFilter *h);
-static urllistFilter * foreachUrllist(urllistFilter *h, gchar * data);
-static urllistFilter * delete(urllistFilter *h , gchar *data);
-static void call_other_browser(const gchar *usr_data);
-
-/*   删除左边的空格   */
-char * l_trim(char * szOutput, const char *szInput)
-{
-    assert(szInput != NULL);
-    assert(szOutput != NULL);
-    assert(szOutput != szInput);
-    for   (NULL; *szInput != '\0' && isspace(*szInput); ++szInput){
-        ;
-    }
-    return strcpy(szOutput, szInput);
-}
-
-/*   删除右边的空格   */
-char *r_trim(char *szOutput, const char *szInput)
-{
-    char *p = NULL;
-    assert(szInput != NULL);
-    assert(szOutput != NULL);
-    assert(szOutput != szInput);
-    strcpy(szOutput, szInput);
-    for(p = szOutput + strlen(szOutput) - 1; p >= szOutput && isspace(*p); --p){
-        ;
-    }
-    *(++p) = '\0';
-    return szOutput;
-}
-
-/*   删除两边的空格   */
-char * a_trim(char * szOutput, const char * szInput)
-{
-    char *p = NULL;
-    assert(szInput != NULL);
-    assert(szOutput != NULL);
-    l_trim(szOutput, szInput);
-    for   (p = szOutput + strlen(szOutput) - 1;p >= szOutput && isspace(*p); --p){
-        ;
-    }
-    *(++p) = '\0';
-    return szOutput;
-}
+#include "midori-uri-filter.h"
 
 
-int GetProfileString(char *profile, char *AppName, char *KeyName, char *KeyVal )
-{
-    char appname[32],keyname[32];
-    char *buf,*c;
-    char buf_i[KEYVALLEN], buf_o[KEYVALLEN];
-    FILE *fp;
-    int found=0; /* 1 AppName 2 KeyName */
-    if( (fp=fopen( profile,"r" ))==NULL ){
-        printf( "openfile [%s] error [%s]\n",profile,strerror(errno) );
-        return(-1);
-    }
-    fseek( fp, 0, SEEK_SET );
-    memset( appname, 0, sizeof(appname) );
-    sprintf( appname,"[%s]", AppName );
-
-    while( !feof(fp) && fgets( buf_i, KEYVALLEN, fp )!=NULL ){
-        l_trim(buf_o, buf_i);
-        if( strlen(buf_o) <= 0 )
-            continue;
-        buf = NULL;
-        buf = buf_o;
-
-        if( found == 0 ){
-            if( buf[0] != '[' ) {
-                continue;
-            } else if ( strncmp(buf,appname,strlen(appname))==0 ){
-                found = 1;
-                continue;
-            }
-
-        } else if( found == 1 ){
-            if( buf[0] == '#' ){
-                continue;
-            } else if ( buf[0] == '[' ) {
-                break;
-            } else {
-                if( (c = (char*)strchr(buf, '=')) == NULL )
-                    continue;
-                memset( keyname, 0, sizeof(keyname) );
-
-                sscanf( buf, "%[^=|^ |^\t]", keyname );
-                if( strcmp(keyname, KeyName) == 0 ){
-                    sscanf( ++c, "%[^\n]", KeyVal );
-                    char *KeyVal_o = (char *)malloc(strlen(KeyVal) + 1);
-                    if(KeyVal_o != NULL){
-                        memset(KeyVal_o, 0, sizeof(KeyVal_o));
-                        a_trim(KeyVal_o, KeyVal);
-                        if(KeyVal_o && strlen(KeyVal_o) > 0)
-                            strcpy(KeyVal, KeyVal_o);
-                        free(KeyVal_o);
-                        KeyVal_o = NULL;
-                    }
-                    found = 2;
-                    break;
-                } else {
-                    continue;
-                }
-            }
-        }
-    }
-    fclose( fp );
-    if( found == 2 )
-        return(0);
-    else
-        return(-1);
-}
 
 struct _MidoriBrowser
 {
@@ -3810,8 +3691,6 @@ _action_location_reset_uri (GtkAction*     action,
     midori_location_action_set_text (MIDORI_LOCATION_ACTION (action), uri);
 }
 
-
-
     static void
 _action_location_submit_uri (GtkAction*     action,
         const gchar*   uri,
@@ -3822,8 +3701,9 @@ _action_location_submit_uri (GtkAction*     action,
     gchar* new_uri;
     gint n;
 
-    call_other_browser(uri);
 
+    if(!call_other_browser(uri))
+       return;
     stripped_uri = g_strdup (uri);
     g_strstrip (stripped_uri);
     new_uri = sokoke_magic_uri (stripped_uri);
@@ -3854,7 +3734,7 @@ _action_location_submit_uri (GtkAction*     action,
             search_uri = browser->location_entry_search;
         }
         new_uri = midori_uri_for_search (search_uri, keywords);
-
+         
         if (browser->history != NULL)
         {
             time_t now = time (NULL);
@@ -3904,110 +3784,6 @@ midori_browser_news_feed_clicked_cb (GtkWidget*     menuitem,
     midori_browser_subscribe_to_news_feed (browser, uri);
 }
 
-
-static urllistFilter *creatUrllist(void)
-{
-    urllistFilter *head;
-    head = (urllistFilter *)malloc(sizeof(urllistFilter));
-    head->urlnext = head;
-    head->urlpre = head;
-    return head;
-}
-
-static urllistFilter *insertUrllist(urllistFilter *h)
-{
-    urllistFilter *s;
-    gchar http1[64];
-    gchar http2[64];
-    GetProfileString("/etc/midori.conf","http_jump","http1", http1);
-    GetProfileString("/etc/midori.conf", "http_jump", "http2", http2);
-    printf("@1%s\n",http1);
-    printf("@1%s\n", http2);
-    strcpy(h->urldata, http1);
-    s = (urllistFilter *) malloc(sizeof(urllistFilter));
-    s->urlnext = h->urlnext;
-    s->urlpre = h;
-    h->urlnext = s;
-    strcpy(s->urldata, http2);
-    printf("@2%s\n",h->urldata);
-    printf("@2%s\n",s->urldata);
-    return h;
-}
-
-static urllistFilter * foreachUrllist(urllistFilter *h, gchar * data)
-{
-    urllistFilter *list;
-    list = h;
-    const gchar *data1, *data2;
-    const gchar *d = "student";
-    size_t size1, size2, size3, size4;
-    do
-    {
-        printf("----------------\n");
-        printf("%s\n", h->urldata);
-        printf("%s\n", list->urldata);
-        printf("----------------\n");
-        data1 = strchr(list->urldata, '.');
-        printf("=1%s\n", list->urldata);
-        printf("1%s\n", data1);
-        data2 = strchr(data, '.');
-        printf("=2%s\n", data);
-        printf("2%s\n", data2);
-        size1 = strlen(data1);
-        printf("3%d\n",size1);
-        size2 = strlen(data2);
-        printf("4%d\n",size2);
-        size4 = strlen(d);
-        printf("5%d\n", size4);
-        size3 = size1 <= size2 ? size1:size2;
-        printf("5%d\n", size3);
-        if(!strncmp(data1,data2,size3))
-        {
-            if((size1+3)<size2)
-                return NULL;
-            return list;
-        }
-        list = list->urlnext;
-    }while(list != h);
-    return NULL;
-}
-
-static urllistFilter * delete(urllistFilter *h , gchar *data)
-{
-    urllistFilter *list;
-    list = foreachUrllist(h, data);
-    if(list != NULL)
-    {
-        list->urlpre->urlnext = list->urlnext;
-        list->urlnext->urlpre = list->urlpre;
-        free(list);
-    }
-    return h;
-}
-
-static void call_other_browser(const gchar *usr_data)
-{
-
-    gchar data1[256];
-    urllistFilter *h = creatUrllist();
-    printf("%p\n", h);
-    insertUrllist(h);
-    printf("7%p\n",h);
-    printf("%s\n", h->urldata);
-    printf("%s\n", h->urlnext->urldata);
-    sprintf(data1,"%s", usr_data);
-    printf("%s\n",data1);
-    if (foreachUrllist(h, data1))
-    {
-        gchar buf[128];
-        gchar browser[32];
-        GetProfileString("/etc/midori.conf", "browser_use", "browser", browser);
-        printf("%s\n",browser);
-        sprintf(buf, "%s %s", browser, data1);
-        system(buf);
-        exit(0);
-    }
-}
 
     static gboolean
 _action_location_secondary_icon_released (GtkAction*     action,
